@@ -15,7 +15,7 @@ class piece{
         public:
         std::vector<std::vector<int>> forme_;
         sf::Color couleur_;
-        std::vector<int> centre {0,0};
+        std::vector<int> centre {50,500};
 
         piece(std::vector<std::vector<int>> forme, sf::Color couleur) : forme_{forme}, couleur_{couleur} {};
 
@@ -24,7 +24,7 @@ class piece{
                 for(int j=0; j<3; j++){
                     if(forme_[j][i] == 1){
                         sf::RectangleShape carre_ij({50.f, 50.f});
-                        carre_ij.move({static_cast<float>(200 +50*i),static_cast<float>(50*j)});
+                        carre_ij.move({static_cast<float>(200 +50*i + centre[0]),static_cast<float>(50*j + centre[1])});
                         carre_ij.setFillColor(couleur_);
                         carre_ij.setOutlineThickness(-5.f);
                         carre_ij.setOutlineColor(sf::Color(couleur_.r + 50., couleur_.g + 50.,couleur_.b + 50));
@@ -64,6 +64,7 @@ public:
         };
     };
 
+// Fonction pour faire tomber toute les lignes au dessus d'une ligne donnée
     void drop_ligne(int ligne){
         for(int i=ligne; i < lignes_ -1; i++){
             board_[i] = board_[i+1];
@@ -121,7 +122,7 @@ const sf::Color jaune = sf::Color(200,200,0);
 const sf::Color violet = sf::Color(100,20,200);
 const sf::Color rose = sf::Color(200,10,50);
 
-
+// Création d'un dictionnaire pour faciliter l'accès aux pièces
 std::map<std::string, piece> pieces{{"z",piece(forme_z, rose)},
                                     {"s",piece(forme_s, rose)},
                                     {"o",piece(forme_o, rose)},
@@ -144,7 +145,7 @@ int main() {
         return -1;
         }
 
-    // Play the music
+    // Musique
     music.setVolume(100.);
     music.play();
 
@@ -155,16 +156,17 @@ int main() {
    
 
     sf::Clock clock;
-    //board de jeu
+    //Création du plateau de jeu
     Board plateau = Board(10,16);
+        // REMARQUE les coordonnées du tableau sont telles que (0,0) correspond au point en haut à gauche du tableau et que les i croissant soietn orientés vers le bas
 
-
+// Créatino des variables qui serviron tà définir le déplacement
     bool rotate;
     int dx;
-    int dy;
+    int dy;, 
 
     //ici créer une fonction rotate et une fonction move
-    //CODER LA FONCTION MOVE    
+    //CODER LA FONCTION MOVE (elle consistera à bouger le centre de la pièce tetromino de dx et dy)
     void move(int dx,int dy, Board& board, piece& tetromino){
         return 0
     }
@@ -182,7 +184,7 @@ int main() {
             if (e.type == sf::Event::Closed) {
                 window.close();
             }
-            dx = 1;
+            dx = 1; // Par défaut, la pièce tombe de 1 case à chaque frame
             dy=0;
             if(e.type == sf::Event::KeyPressed){
                 if(e.key.code==sf::Keyboard::Up) rotate=true;
